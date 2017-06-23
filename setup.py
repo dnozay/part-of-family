@@ -26,11 +26,11 @@ setuptools.setup(
 
     setup_requires=['setuptools-git'],
 
-    # entry_points={
-    #    'console_scripts': [
-    #        'script_name = package.module:entry_callable',
-    #    ],
-    # },
+    entry_points={
+       'console_scripts': [
+           'pof-webapp = pof.webapp:main',
+       ],
+    },
 
     classifiers=[
       'Development Status :: 5 - Production/Stable',
