@@ -9,13 +9,13 @@ setuptools.setup(
     name='part-of-family',
     version='0.0.1',
 
-    author='<PLACEHOLDER>',
-    author_email='<PLACEHOLDER>',
+    author='Max Zheng',
+    author_email='maxzheng.os @t gmail.com',
 
-    description='<PLACEHOLDER>',
+    description='Top secret product',
     long_description=open('README.rst').read(),
 
-    url='<PLACEHOLDER>',
+    url='https://github.com/maxzheng/part-of-family',
 
     install_requires=remote_requirements,
 
@@ -36,7 +36,7 @@ setuptools.setup(
       'Development Status :: 5 - Production/Stable',
 
       'Intended Audience :: Developers',
-      'Topic :: Software Development :: <PLACEHOLDER SUB-TOPIC>',
+      'Topic :: Social Media :: Diary',
 
       'License :: OSI Approved :: MIT License',
 
@@ -44,5 +44,5 @@ setuptools.setup(
       'Programming Language :: Python :: 3.6',
     ],
 
-    keywords='<KEYWORDS>',
+    keywords='family diary tree hierarchy',
 )
