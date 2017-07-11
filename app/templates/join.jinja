@@ -1,0 +1,17 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+    <div class="container">
+        <form class="form-signin" action="{{ 'join'|url }}" method="POST" enctype="application/x-www-form-urlencoded"
+              accept-charset="utf-8">
+            <h2 class="form-signin-heading">{{ title }}</h2>
+            <label for="name" class="sr-only">Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Name" value="{{ name }}" required autofocus>
+            <label for="email" class="sr-only">Email address</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Email address" value="{{ email }}" required>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" value="{{ password }}" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Join</button>
+      </form>
+    </div> <!-- /container -->
+{% endblock %}

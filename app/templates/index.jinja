@@ -1,0 +1,11 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+    <p>{{ intro }}</p>
+
+    <b>
+        <a href="{{ 'login'|url }}">Login</a>
+        <a href="{{ 'join'|url }}">Join</a>
+    </b>
+
+{% endblock %}
