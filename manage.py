@@ -14,7 +14,7 @@ def main():
 
 @main.command(help='Run web app')
 def runserver():
-    os.system('adev runserver --host `hostname`')
+    os.system('adev runserver --host `hostname` --debug-toolbar')
 
 
 @main.command(help='Initialize database')
