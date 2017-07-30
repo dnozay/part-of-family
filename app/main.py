@@ -13,7 +13,7 @@ from sqlalchemy.engine.url import URL
 
 from .settings import Settings
 from .views import index
-from .views.user import Login, Join
+from .views.user import Login, Join, Logout
 
 
 THIS_DIR = Path(__file__).parent
@@ -102,6 +102,7 @@ def setup_routes(app):
     app.router.add_get('/', index, name='index')
 
     app.router.add_route('*', '/login', Login, name='login')
+    app.router.add_route('*', '/logout', Logout, name='logout')
     app.router.add_route('*', '/join', Join, name='join')
 
 

@@ -85,9 +85,40 @@ class Login(View):
     @template('login.jinja')
     async def post(self):
         data = await self.request.post()
+        error = None
+        user = None
+
+        try:
+            async with self.request.app['pg_engine'].acquire() as conn:
+                result = await conn.execute(sa_users.select(
+                    sa_users.c.email == data['email']
+                ))
+                user = await result.first()
+
+            if user and pbkdf2_sha256.verify(data['password'], user.password):
+                await UserSession(self.request).create(user.id)
+                return HTTPFound(self.request.app.router['index'].url())
+
+            else:
+                error = 'Incorrect email or password. Please try again.'
+
+        except Exception as e:
+            log.error(e)
+            error = 'Uh oh something went wrong. Please try again later.'
 
         return {
+            'warn': error,
             'title': 'Login',
             'email': data['email'],
             'password': data['password'],
         }
+
+
+class Logout(View):
+    """
+    This is the view handler for the "/logout" url.
+    """
+
+    async def get(self):
+        await UserSession(self.request).delete()
+        return HTTPFound(self.request.app.router['index'].url())

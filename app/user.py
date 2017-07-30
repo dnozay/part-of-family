@@ -50,6 +50,23 @@ class UserSession:
 
         session['session_id'] = session_id
 
+    async def delete(self):
+        """ Deletes the session ID """
+        session = await get_session(self.request)
+
+        session_id = session.pop('session_id', None)
+        client_ip = self.client_ip()[:32]
+
+        if session_id:
+            try:
+                async with self.request.app['pg_engine'].acquire() as conn:
+                    await conn.execute(sa_user_sessions.delete().where(sa.and_(
+                        id=session_id,
+                        client_ip=client_ip,
+                    )))
+            except Exception as e:
+                log.error(e)
+
     def client_ip(self):
         """ Returns the user client IP """
         host = '0.0.0.0'

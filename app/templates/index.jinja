@@ -6,6 +6,9 @@
     <b>
         <a href="{{ 'login'|url }}">Login</a>
         <a href="{{ 'join'|url }}">Join</a>
+        {% if user %}
+            <a href="{{ 'logout'|url }}">Logout</a>
+        {% endif %}
     </b>
 
 {% endblock %}

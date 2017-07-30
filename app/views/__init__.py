@@ -14,6 +14,7 @@ async def index(request):
     """
     user_id = await UserSession(request).user_id()
     name = None
+    user = None
 
     if user_id:
         async with request.app['pg_engine'].acquire() as conn:
@@ -23,4 +24,5 @@ async def index(request):
 
     return {
         'intro': "Welcome to Part of Family" + (', ' + name if name else ''),
+        'user': user,
     }
