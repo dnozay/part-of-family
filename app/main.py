@@ -14,6 +14,7 @@ from sqlalchemy.engine.url import URL
 from .settings import Settings
 from .views import index
 from .views.user import Login, Join, Logout
+from .views.diary import Day, Month
 
 
 THIS_DIR = Path(__file__).parent
@@ -101,9 +102,16 @@ async def cleanup(app: web.Application):
 def setup_routes(app):
     app.router.add_get('/', index, name='index')
 
+    # User
     app.router.add_route('*', '/login', Login, name='login')
     app.router.add_route('*', '/logout', Logout, name='logout')
     app.router.add_route('*', '/join', Join, name='join')
+
+    # Diary
+    app.router.add_route('*', '/diary/new', Day, name='diary-new')
+    app.router.add_route('*', '/diary/{year}/{month}/{day}', Day, name='diary-day')
+    app.router.add_route('*', '/diary/{year}/{month}', Month, name='diary-month')
+    app.router.add_route('*', '/diary', Month, name='diary')
 
 
 def create_app(loop):
@@ -115,7 +123,7 @@ def create_app(loop):
     )
 
     jinja2_loader = jinja2.FileSystemLoader(str(THIS_DIR / 'templates'))
-    aiohttp_jinja2.setup(app, loader=jinja2_loader, app_key=JINJA2_APP_KEY)
+    aiohttp_jinja2.setup(app, loader=jinja2_loader, app_key=JINJA2_APP_KEY, autoescape=True)
     app[JINJA2_APP_KEY].filters.update(
         url=reverse_url,
         static=static_url,

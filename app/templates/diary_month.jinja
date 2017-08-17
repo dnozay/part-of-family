@@ -1,0 +1,36 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Day</td>
+                <td>Moments</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day, moments in highlights %}
+            <tr id=1>
+                <td>{{ day|safe }}</td>
+                <td>{{ moments }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td></td>
+                <td>No interesting moments yet? Go make some!! ;)</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ 'diary-new'|url }}">New Moments</a><br/>
+
+    <script>
+        $('.table > tbody > tr').click(function() {
+
+            tr = $( this )[0]
+            day = tr.children[0].textContent
+            window.location.replace("{{ 'diary-month'|url(year=date.year, month=date.month) }}/" + day)
+        });
+    </script>
+{% endblock %}

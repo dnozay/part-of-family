@@ -60,7 +60,7 @@ class Join(View):
             else:
                 await UserSession(self.request).create(user_id)
 
-                return HTTPFound(self.request.app.router['index'].url())
+                return HTTPFound(self.request.app.router['diary'].url())
 
         if error:
             return {
@@ -97,7 +97,7 @@ class Login(View):
 
             if user and pbkdf2_sha256.verify(data['password'], user.password):
                 await UserSession(self.request).create(user.id)
-                return HTTPFound(self.request.app.router['index'].url())
+                return HTTPFound(self.request.app.router['diary'].url())
 
             else:
                 error = 'Incorrect email or password. Please try again.'

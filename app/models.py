@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, Sequence, String, func
+from sqlalchemy import Column, DateTime, Date, Integer, Sequence, String, Text, func
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -24,5 +24,16 @@ class UserSession(Base):
     created_on = Column(DateTime(), server_default=func.now(), nullable=False)
 
 
+class DiaryEntry(Base):
+    __tablename__ = 'diary_entries'
+
+    id = Column(Integer, Sequence('diary_entry_id_seq'), primary_key=True, nullable=False)
+    user_id = Column(Integer, index=True, nullable=False)
+    created_on = Column(Date(), index=True, nullable=False)
+    highlights = Column(Text, nullable=False)
+    moments = Column(Text, nullable=False)
+
+
 sa_users = User.__table__
 sa_user_sessions = UserSession.__table__
+sa_diary_entries = DiaryEntry.__table__

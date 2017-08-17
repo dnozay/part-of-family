@@ -1,13 +1,15 @@
 {% extends 'base.jinja' %}
 
 {% block content %}
-    <p>{{ intro }}</p>
+    <p>{{ intro|safe }}</p>
 
     <b>
-        <a href="{{ 'login'|url }}">Login</a>
-        <a href="{{ 'join'|url }}">Join</a>
         {% if user %}
-            <a href="{{ 'logout'|url }}">Logout</a>
+            <a href="{{ 'diary-new'|url }}">New Entry</a><br/>
+            <a href="{{ 'logout'|url }}">Logout</a><br/>
+        {% else %}
+            <a href="{{ 'join'|url }}">Join</a><br/>
+            <a href="{{ 'login'|url }}">Login</a><br/>
         {% endif %}
     </b>
 

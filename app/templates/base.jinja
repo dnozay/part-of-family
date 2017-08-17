@@ -1,4 +1,4 @@
-{% set base_title = 'Part of Family' %}
+{% set base_title = 'Part of The Family' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,16 +19,21 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ 'css/bootstrap.min.css'|static }}" rel="stylesheet">
 
-    <!-- Custom styles -->
+    <!-- Custom CSS -->
     <link href="{{ 'css/styles.css'|static }}" rel="stylesheet">
+
 </head>
 <body>
-  <div class='content'>
-    {% if error %} <div class="alert alert-danger"> {{ error }} </div> {% endif %}
-    {% if warn %} <div class="alert alert-warning"> {{ warn }} </div> {% endif %}
-    {% if info %} <div class="alert alert-info"> {{ info }} </div> {% endif %}
+    <!-- jQuery JS -->
+    <script src="{{ 'js/jquery.min.js'|static }}"></script>
 
-    {% block content %}{% endblock %}
-  </div>
+    <div class='content'>
+        {% if error %} <div class="alert alert-danger"> {{ error }} </div> {% endif %}
+        {% if warn %} <div class="alert alert-warning"> {{ warn }} </div> {% endif %}
+        {% if info %} <div class="alert alert-info"> {{ info }} </div> {% endif %}
+        {% if success %} <div class="alert alert-success"> {{ success }} </div> {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

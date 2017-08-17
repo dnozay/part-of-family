@@ -23,6 +23,6 @@ async def index(request):
             name = user.name
 
     return {
-        'intro': "Welcome to Part of Family" + (', ' + name if name else ''),
+        'intro': "Welcome to <b>Part of The Family</b>" + (', ' + name if name else ''),
         'user': user,
     }
