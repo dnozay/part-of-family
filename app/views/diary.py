@@ -50,10 +50,14 @@ class Day(DiaryView):
             )))
             entry = await result.first()
 
+        next_day = date + datetime.timedelta(days=1) if date < datetime.date.today() else None
+
         return {
             'success': self.request.query.get('success'),
             'title': self.title.format(date),
             'moments': entry.moments if entry else '',
+            'prev_day': date - datetime.timedelta(days=1),
+            'next_day': next_day,
         }
 
     @template('diary_entry.jinja')
