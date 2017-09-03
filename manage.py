@@ -13,8 +13,13 @@ def main():
 
 
 @main.command(help='Run web app')
-def runserver():
-    os.system('adev runserver --host `hostname` --debug-toolbar')
+@click.option('--debug', help='Turn on debug toolbar')
+def runserver(debug):
+    opts = []
+    if debug:
+        opts.append(['--debug-toolbar'])
+
+    os.system('adev runserver --host `hostname` {}'.format(' '.join(opts)))
 
 
 @main.command(help='Initialize database')

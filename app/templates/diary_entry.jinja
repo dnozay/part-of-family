@@ -1,8 +1,8 @@
 {% extends 'base.jinja' %}
 
 {% block content %}
-    <h2><a href="{{ 'diary-day'|url(year=prev_day.year, month=prev_day.month, day=prev_day.day) }}" class="diary-nav-prev">◀</a>
-        {{ title }}
+    <h2><a href="{{ 'diary-day'|url(year=prev_day.year, month=prev_day.month, day=prev_day.day) }}" class="diary-nav diary-nav-prev">◀</a>
+        {{- title -}}
         {% if next_day %}
             <a href="{{ 'diary-day'|url(year=next_day.year, month=next_day.month, day=next_day.day) }}" class="diary-nav diary-nav-next">▶</a>
         {% endif %}

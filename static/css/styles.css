@@ -9,6 +9,9 @@ body {
   margin: 0 auto;
 }
 
+.diary-nav:hover {
+    text-decoration: none;
+}
 .diary-nav-next {
     float: right;
 }
