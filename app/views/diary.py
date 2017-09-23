@@ -1,3 +1,4 @@
+from collections import defaultdict
 import datetime
 import logging
 import re
@@ -135,7 +136,7 @@ class Day(DiaryView):
             }
 
         else:
-            return HTTPFound(self.request.app.router['diary'].url_for())
+            return HTTPFound(self.request.app.router['diary-month'].url_for(year=date.year, month=date.month))
 
 
 class Month(DiaryView):
@@ -157,7 +158,7 @@ class Month(DiaryView):
                     sa_diary_entries.c.user_id == user_id,
                     sa_diary_entries.c.created_on >= start_date,
                     sa_diary_entries.c.created_on < end_date,
-                )).order_by(sa_diary_entries.c.created_on.desc()))
+                )))
                 async for entry in result:
                     highlights.append((entry.created_on.day, entry.highlights))
 
@@ -178,3 +179,78 @@ class Month(DiaryView):
         start_date = datetime.date(date.year, date.month, 1)
         end_date = datetime.date(date.year, date.month + 1, 1) if date.month < 12 else datetime.date(date.year + 1, 1, 1)
         return start_date, end_date
+
+
+class Year(DiaryView):
+    """
+    This is the view handler for the "/diary/{year}" url.
+    """
+    title = '{:%B}'
+
+    @template('diary_year.jinja')
+    async def get(self):
+        start_date, end_date = self.date_range()
+        user_id = await UserSession(self.request).user_id()
+        highlights = defaultdict(lambda: defaultdict(int))
+        warn = None
+
+        try:
+            async with self.request.app['pg_engine'].acquire() as conn:
+                result = await conn.execute(sa_diary_entries.select(and_(
+                    sa_diary_entries.c.user_id == user_id,
+                    sa_diary_entries.c.created_on >= start_date,
+                    sa_diary_entries.c.created_on < end_date,
+                )).with_only_columns([sa_diary_entries.c.created_on]))
+                async for entry in result:
+                    highlights[entry.created_on.month][entry.created_on.strftime('%B')] += 1
+
+        except Exception as e:
+            log.error(e, exc_info=1)
+            warn = 'Oops. Something is wrong. Please try again later'
+
+        return {
+            'warn': warn,
+            'title': start_date.year,
+            'highlights': highlights,
+            'date': start_date,
+        }
+
+    def date_range(self):
+        """ Start and end day of the year (exclusive) for a given date """
+        date = self.entry_date()
+        start_date = datetime.date(date.year, 1, 1)
+        end_date = datetime.date(date.year + 1, 1, 1)
+        return start_date, end_date
+
+
+class MyDiary(DiaryView):
+    """
+    This is the view handler for the "/diary" url.
+    """
+    title = '{:%B}'
+
+    @template('diary.jinja')
+    async def get(self):
+        user_id = await UserSession(self.request).user_id()
+        highlights = defaultdict(int)
+        warn = None
+
+        try:
+            async with self.request.app['pg_engine'].acquire() as conn:
+                result = await conn.execute(
+                    sa_diary_entries.select(
+                        sa_diary_entries.c.user_id == user_id
+                    ).with_only_columns(
+                        [sa_diary_entries.c.created_on]))
+                async for entry in result:
+                    highlights[entry.created_on.year] += 1
+
+        except Exception as e:
+            log.error(e, exc_info=1)
+            warn = 'Oops. Something is wrong. Please try again later'
+
+        return {
+            'warn': warn,
+            'title': 'My Diary',
+            'highlights': highlights,
+        }

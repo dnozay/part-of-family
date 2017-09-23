@@ -4,7 +4,7 @@
     <table class='menu'>
         <tr>
             <td class='menu-left'>
-                <a href="{{ 'diary-year'|url(year=date.year) }}"><span class="glyphicon glyphicon-th"></span></a>
+                <a href="{{ 'diary'|url }}"><span class="glyphicon glyphicon-th"></span></a>
             </td>
             <td class='menu-center'>
                 <h1>{{ title }}</h1>
@@ -19,15 +19,15 @@
     <table class="table table-striped diary-highlights">
         <thead>
             <tr>
-                <th>Day</th>
+                <th>Year</th>
                 <th>Moments</th>
             </tr>
         </thead>
         <tbody>
-            {% for day, moments in highlights %}
+            {% for year in highlights.keys()|sort %}
             <tr id=1>
-                <td>{{ day|safe }}</td>
-                <td>{{ moments }}</td>
+                    <td year={{ year|safe }}>{{ year|safe }}</td>
+                    <td>{{ highlights[year]|safe }} moment(s)</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -41,9 +41,9 @@
         $('.table > tbody > tr').click(function() {
 
             tr = $( this )[0]
-            day = tr.children[0].textContent
-            if (day) {
-                window.location.replace("{{ 'diary-month'|url(year=date.year, month=date.month) }}/" + day)
+            year = tr.children[0].getAttribute('year')
+            if (year) {
+                window.location.replace("{{ 'diary'|url }}/" + year)
             }
         });
     </script>

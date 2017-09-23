@@ -16,9 +16,6 @@ h1 {
 .diary-nav:hover {
     text-decoration: none;
 }
-.diary-nav-next {
-    float: right;
-}
 
 .diary-highlights td {
     cursor: pointer;
@@ -60,6 +57,9 @@ h1 {
     padding: 0px 9px 4px;
     font-size: xx-large;
 }
-.menu-enter {
-    width: 100%;
+.menu-center {
+    text-align: center;
+}
+.menu-right {
+    text-align: right;
 }

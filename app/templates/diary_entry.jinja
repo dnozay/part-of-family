@@ -7,10 +7,13 @@
                 <a href="{{ 'diary-month'|url(year=day.year, month=day.month) }}"><span class="glyphicon glyphicon-th"></span></a>
             </td>
             <td class='menu-center'>
-                <h1><a href="{{ 'diary-day'|url(year=prev_day.year, month=prev_day.month, day=prev_day.day) }}" class="diary-nav diary-nav-prev">◀</a>
-                    {{- title -}}
+                <h1>{{- title -}}</h1>
+            </td>
+            <td class='menu-right'>
+                <h1>
+                    <a href="{{ 'diary-day'|url(year=prev_day.year, month=prev_day.month, day=prev_day.day) }}" class="diary-nav diary-nav-prev">◀</a>
                     {% if next_day %}
-                        <a href="{{ 'diary-day'|url(year=next_day.year, month=next_day.month, day=next_day.day) }}" class="diary-nav diary-nav-next">▶</a>
+                    <a href="{{ 'diary-day'|url(year=next_day.year, month=next_day.month, day=next_day.day) }}" class="diary-nav diary-nav-next">▶</a>
                     {% endif %}
                 </h1>
             </td>

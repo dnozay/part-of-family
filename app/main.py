@@ -14,7 +14,7 @@ from sqlalchemy.engine.url import URL
 from .settings import Settings
 from .views import index
 from .views.user import Login, Join, Logout
-from .views.diary import Day, Month
+from .views.diary import Day, Month, Year, MyDiary
 
 
 THIS_DIR = Path(__file__).parent
@@ -111,7 +111,8 @@ def setup_routes(app):
     app.router.add_route('*', '/diary/new', Day, name='diary-new')
     app.router.add_route('*', '/diary/{year}/{month}/{day}', Day, name='diary-day')
     app.router.add_route('*', '/diary/{year}/{month}', Month, name='diary-month')
-    app.router.add_route('*', '/diary', Month, name='diary')
+    app.router.add_route('*', '/diary/{year}', Year, name='diary-year')
+    app.router.add_route('*', '/diary', MyDiary, name='diary')
 
 
 def create_app(loop):
