@@ -14,7 +14,7 @@ from ..user import UserSession
 log = logging.getLogger(__name__)
 DOUBLE_NEWLINE_RE = re.compile('(?:\r?\n){2}')
 ENDING_CHARS_RE = re.compile('[!.]')
-TRAIL_CHARS_RE = re.compile('[:,-]')
+TRAIL_CHARS_RE = re.compile('[:-]')
 
 
 class DiaryView(View):
@@ -36,7 +36,7 @@ class Day(DiaryView):
     """
     This is the view handler for the "/diary/{year}/{month}/{day}" url.
     """
-    title = '{:%b %d}: Moments'
+    title = '{:%b %d}'
 
     @template('diary_entry.jinja')
     async def get(self):
@@ -56,6 +56,7 @@ class Day(DiaryView):
             'success': self.request.query.get('success'),
             'title': self.title.format(date),
             'moments': entry.moments if entry else '',
+            'day': date,
             'prev_day': date - datetime.timedelta(days=1),
             'next_day': next_day,
         }
@@ -141,7 +142,7 @@ class Month(DiaryView):
     """
     This is the view handler for the "/diary/{year}/{month}" url.
     """
-    title = 'Moments for {:%b}'
+    title = '{:%B}'
 
     @template('diary_month.jinja')
     async def get(self):
@@ -156,7 +157,7 @@ class Month(DiaryView):
                     sa_diary_entries.c.user_id == user_id,
                     sa_diary_entries.c.created_on >= start_date,
                     sa_diary_entries.c.created_on < end_date,
-                )))
+                )).order_by(sa_diary_entries.c.created_on.desc()))
                 async for entry in result:
                     highlights.append((entry.created_on.day, entry.highlights))
 

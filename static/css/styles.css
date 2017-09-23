@@ -4,6 +4,10 @@ body {
   background-color: #eee;
 }
 
+h1 {
+    margin-top: 0px;
+}
+
 .content {
   width: 360px;
   margin: 0 auto;
@@ -47,4 +51,15 @@ body {
 .form-signin input[type="password"] {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.menu {
+    width: 100%;
+}
+.menu .glyphicon {
+    padding: 0px 9px 4px;
+    font-size: xx-large;
+}
+.menu-enter {
+    width: 100%;
 }
