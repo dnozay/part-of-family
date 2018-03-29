@@ -254,3 +254,37 @@ class MyDiary(DiaryView):
             'title': 'My Diary',
             'highlights': highlights,
         }
+
+
+class FamilyDiaries(DiaryView):
+    """
+    This is the view handler for the "/diary/family" url.
+    """
+    title = '{:%B}'
+
+    @template('diary.jinja')
+    async def get(self):
+        user_id = await UserSession(self.request).user_id()
+        highlights = defaultdict(int)
+        warn = None
+
+        try:
+            async with self.request.app['pg_engine'].acquire() as conn:
+                result = await conn.execute(
+                    sa_diary_entries.select(
+                        sa_diary_entries.c.user_id == user_id
+                    ).with_only_columns(
+                        [sa_diary_entries.c.created_on]))
+                async for entry in result:
+                    highlights[entry.created_on.year] += 1
+
+        except Exception as e:
+            log.error(e, exc_info=1)
+            warn = 'Oops. Something is wrong. Please try again later'
+
+        return {
+            'warn': warn,
+            'title': 'My Diary',
+            'highlights': highlights,
+        }
+

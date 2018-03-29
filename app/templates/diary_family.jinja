@@ -1,0 +1,50 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+    <table class='menu'>
+        <tr>
+            <td class='menu-left'>
+                <a href="{{ 'diary'|url }}"><span class="glyphicon glyphicon-th"></span></a>
+            </td>
+            <td class='menu-center'>
+                <h1>{{ title }}</h1>
+            </td>
+            <td class='menu-right'>
+                <a href="{{ 'diary-new'|url }}"><span class="glyphicon glyphicon-plus"></span></a>
+            </td>
+        </tr>
+    </table>
+
+    {% if highlights %}
+    <table class="table table-striped diary-highlights">
+        <thead>
+            <tr>
+                <th>Diary</th>
+                <th>Moments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for id in highlights.keys()|sort %}
+            <tr id=1>
+                    <td id={{ id|safe }}>{{ highlights[id].name }}</td>
+                    <td>{{ highlights[id].moments|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <br/>
+    Time doesn't wait for anyone, so make the most of it by creating new moments.
+    {% endif %}
+
+    <script>
+        $('.table > tbody > tr').click(function() {
+
+            tr = $( this )[0]
+            id = tr.children[0].getAttribute('id')
+            if (id) {
+                window.location.replace("{{ 'diary'|url }}/" + id)
+            }
+        });
+    </script>
+{% endblock %}
